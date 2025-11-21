@@ -1,9 +1,14 @@
 package max.keils.readlybook.di
 
 import dagger.Component
+import max.keils.readlybook.ui.MainActivity
 
 @ApplicationScope
 @Component(
     modules = [AppModule::class]
 )
-interface AppComponent
+interface AppComponent {
+
+    fun inject(activity: MainActivity)
+
+}
