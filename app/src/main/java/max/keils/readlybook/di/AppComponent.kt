@@ -7,4 +7,8 @@ import max.keils.readlybook.ui.MainActivity
 @Component(
     modules = [AppModule::class]
 )
-interface AppComponent
+interface AppComponent {
+
+    fun inject(activity: MainActivity)
+
+}

@@ -2,14 +2,31 @@ package max.keils.data.source.remote
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-internal class FirebaseRemoteDataSource @Inject constructor(
+class FirebaseAuthRemoteDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) {
 
+    private val _currentUserId = MutableStateFlow(getCurrentUserId())
+    val currentUserId
+        get() = _currentUserId.asStateFlow()
+
+
+    init {
+        firebaseAuth.addAuthStateListener { auth ->
+            _currentUserId.value = auth.currentUser?.uid
+        }
+    }
+
     suspend fun signIn(email: String, password: String): FirebaseUser {
+        if (email.isEmpty() || password.isEmpty()) {
+            throw IllegalArgumentException("Email and password must not be empty")
+        }
+
         val authResult = firebaseAuth.signInWithEmailAndPassword(email, password)
             .await()
 
@@ -18,6 +35,10 @@ internal class FirebaseRemoteDataSource @Inject constructor(
     }
 
     suspend fun signUp(email: String, password: String): FirebaseUser {
+        if (email.isEmpty() || password.isEmpty()) {
+            throw IllegalArgumentException("Email and password must not be empty")
+        }
+
         val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password)
             .await()
 

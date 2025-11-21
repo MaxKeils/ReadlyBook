@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ReadlyBook</string>
+    <string name="navigation_book_list">Books</string>
+    <string name="navigation_book_loading">Upload</string>
+    <string name="navigation_profile">Profile</string>
+    <string name="sign_in">SignIn</string>
+    <string name="sign_up">SignUp</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
 </resources>
