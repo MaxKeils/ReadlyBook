@@ -1,4 +1,4 @@
-package max.keils.readlybook
+package max.keils.readlybook.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
