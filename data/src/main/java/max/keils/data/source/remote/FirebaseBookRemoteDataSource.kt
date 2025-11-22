@@ -4,6 +4,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import max.keils.data.mapper.BookMapper
@@ -47,6 +50,28 @@ class FirebaseBookRemoteDataSource @Inject constructor(
         val docRef = firestore.collection("books").add(bookMap).await()
 
         return docRef.id
+    }
+
+        fun getUserBooks(userId: String): Flow<List<Book>> = callbackFlow {
+        val listener = firestore.collection("books")
+            .whereEqualTo("userId", userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                if (snapshot == null) {
+                    trySend(emptyList())
+                    return@addSnapshotListener
+                }
+                val books = snapshot.documents.mapNotNull { document ->
+                    val map = document.data ?: return@mapNotNull null
+                    val book = bookMapper.mapFirestoreMapToEntity(document.id, map)
+                    book
+                }
+                trySend(books)
+            }
+        awaitClose { listener.remove() }
     }
 
     companion object {

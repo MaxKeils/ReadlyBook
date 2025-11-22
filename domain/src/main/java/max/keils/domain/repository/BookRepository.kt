@@ -1,5 +1,6 @@
 package max.keils.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import max.keils.domain.entity.Book
 
 interface BookRepository {
@@ -10,7 +11,7 @@ interface BookRepository {
         onProgress: suspend (Float) -> Unit
     ): String
 
-    suspend fun getUserBooks(userId: String): List<Book>
+    fun getUserBooks(userId: String): Flow<List<Book>>
 
     suspend fun getBookById(bookId: String): Book?
 

@@ -17,4 +17,6 @@
     <string name="loading">Loading...</string>
     <string name="loading_error">Loading error</string>
     <string name="try_again">Try again</string>
+    <string name="my_books">My books</string>
+    <string name="search_books">Search books...</string>
 </resources>

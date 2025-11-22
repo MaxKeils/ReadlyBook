@@ -5,6 +5,7 @@ import dagger.Provides
 import max.keils.domain.repository.AuthRepository
 import max.keils.domain.repository.BookRepository
 import max.keils.domain.usecase.GetCurrentUserIdUseCase
+import max.keils.domain.usecase.GetUserBooksUseCase
 import max.keils.domain.usecase.SignInUseCase
 import max.keils.domain.usecase.SignOutUseCase
 import max.keils.domain.usecase.SignUpUseCase
@@ -30,5 +31,9 @@ object UseCaseModule {
     @Provides
     fun provideUploadBookUseCase(repository: BookRepository) =
         UploadBookUseCase(repository)
+
+    @Provides
+    fun provideGetUserBooksUseCase(repository: BookRepository) =
+        GetUserBooksUseCase(repository)
 
 }

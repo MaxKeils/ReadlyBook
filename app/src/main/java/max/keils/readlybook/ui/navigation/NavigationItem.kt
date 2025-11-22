@@ -10,7 +10,7 @@ internal sealed class NavigationItem(
 
     data object BookList : NavigationItem(
         screen = Screen.BookList,
-        labelResId = R.string.navigation_book_list,
+        labelResId = R.string.my_books,
         imageResId = R.drawable.ic_book_list
     )
 
