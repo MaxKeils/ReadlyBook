@@ -7,11 +7,12 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import max.keils.data.source.local.BookCacheManager
 import max.keils.domain.repository.BookRepository
+import max.keils.domain.usecase.UploadBookUseCase
 
 class UploadBookWorker(
     appContext: Context,
     workerParams: WorkerParameters,
-    private val repository: BookRepository,
+    private val uploadBookUseCase: UploadBookUseCase,
     private val cacheManager: BookCacheManager
 ) : CoroutineWorker(appContext, workerParams) {
 
@@ -42,7 +43,7 @@ class UploadBookWorker(
                 uploadedAt = System.currentTimeMillis()
             )
 
-            val bookId = repository.uploadBook(book, fileBytes) { progress ->
+            val bookId = uploadBookUseCase(book, fileBytes) { progress ->
                 setProgress(workDataOf("progress" to progress))
             }
 
