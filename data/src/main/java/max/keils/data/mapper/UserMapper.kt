@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseUser
 import max.keils.domain.entity.UserData
 import javax.inject.Inject
 
-class FirebaseMapper @Inject constructor() {
+class UserMapper @Inject constructor() {
 
     fun mapFirebaseUserToUserEntity(firebaseUser: FirebaseUser) = UserData(
         id = firebaseUser.uid,

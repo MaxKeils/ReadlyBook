@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -39,9 +40,12 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(libs.dagger)
+    implementation(libs.firebase.firestore)
+    api(libs.androidx.work.runtime.ktx)
     ksp(libs.dagger.compiler)
 
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
