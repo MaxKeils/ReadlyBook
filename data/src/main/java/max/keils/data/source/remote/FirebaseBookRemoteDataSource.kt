@@ -46,7 +46,7 @@ class FirebaseBookRemoteDataSource @Inject constructor(
 
         val bookWithUrl = book.copy(fileUrl = downloadUri.toString())
 
-        val bookMap = bookMapper.mapEntityToFirestoreMap(bookWithUrl)
+        val bookMap = bookMapper.mapDomainToFirestoreMap(bookWithUrl)
         val docRef = firestore.collection("books").add(bookMap).await()
 
         return docRef.id
@@ -66,7 +66,7 @@ class FirebaseBookRemoteDataSource @Inject constructor(
                 }
                 val books = snapshot.documents.mapNotNull { document ->
                     val map = document.data ?: return@mapNotNull null
-                    val book = bookMapper.mapFirestoreMapToEntity(document.id, map)
+                    val book = bookMapper.mapFirestoreMapToDomain(document.id, map)
                     book
                 }
                 trySend(books)
@@ -79,8 +79,28 @@ class FirebaseBookRemoteDataSource @Inject constructor(
             val docRef = firestore.collection("books").document(bookId)
             docRef.delete().await()
             true
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
+        }
+    }
+
+    suspend fun downloadBookFromStorage(fileUrl: String): ByteArray {
+        val storageRef = storage.getReferenceFromUrl(fileUrl)
+
+        val metadata = storageRef.metadata.await()
+        val fileSize = metadata.sizeBytes
+
+        val bytes = storageRef.getBytes(fileSize).await()
+        return bytes
+    }
+
+    suspend fun getBookById(bookId: String): Book? {
+        return try {
+            val document = firestore.collection("books").document(bookId).get().await()
+            val map = document.data ?: return null
+            bookMapper.mapFirestoreMapToDomain(document.id, map)
+        } catch (_: Exception) {
+            null
         }
     }
 }

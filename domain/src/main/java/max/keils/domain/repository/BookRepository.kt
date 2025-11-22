@@ -17,4 +17,14 @@ interface BookRepository {
 
     suspend fun deleteBook(bookId: String): Boolean
 
+    suspend fun downloadBook(bookId: String): Book
+
+    suspend fun getUserBooksFromCache(userId: String): List<Book>?
+
+    suspend fun syncUserBooksWithFirebase(userId: String): List<Book>
+
+    suspend fun deleteBookLocally(bookId: String): Boolean
+
+    suspend fun deleteBookEverywhere(bookId: String): Boolean
+
 }

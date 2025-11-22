@@ -30,7 +30,13 @@ class UploadBookViewModel @Inject constructor(
         _state.value = UploadBookState.Idle
     }
 
-    fun uploadBookInBackground(context: Context, fileUri: Uri, title: String, author: String) {
+    fun uploadBookInBackground(
+        context: Context,
+        fileUri: Uri,
+        title: String,
+        author: String,
+        coverUrl: String? = null
+    ) {
         if (title.isEmpty()) {
             _state.value = UploadBookState.Error("Title cannot be empty")
             return
@@ -53,16 +59,18 @@ class UploadBookViewModel @Inject constructor(
 
                 val cachedFile = bookCacheManager.copyUriToTempCache(fileUri, fileName)
 
+                val inputDataBuilder = mutableMapOf(
+                    "filePath" to cachedFile.absolutePath,
+                    "fileName" to fileName,
+                    "title" to title,
+                    "author" to author,
+                    "userId" to userId
+                )
+
+                coverUrl?.let { inputDataBuilder["coverUrl"] = it }
+
                 val request = OneTimeWorkRequestBuilder<UploadBookWorker>()
-                    .setInputData(
-                        workDataOf(
-                            "filePath" to cachedFile.absolutePath,
-                            "fileName" to fileName,
-                            "title" to title,
-                            "author" to author,
-                            "userId" to userId
-                        )
-                    )
+                    .setInputData(workDataOf(*inputDataBuilder.toList().toTypedArray()))
                     .build()
 
                 val workManager = WorkManager.getInstance(context)

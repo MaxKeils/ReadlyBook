@@ -7,23 +7,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberSearchBarState
+import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import max.keils.domain.entity.Book
 import max.keils.readlybook.R
 import max.keils.readlybook.ui.components.BookListItem
+import max.keils.readlybook.ui.components.DeleteConfirmDialog
 import max.keils.readlybook.ui.components.ReadlySearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +36,7 @@ fun BookListScreen(
     viewModel: BookListViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val downloadingBooks by viewModel.downloadingBooks.collectAsState()
 
     val searchBarState = rememberSearchBarState()
     val searchQuery by viewModel.search.collectAsState()
@@ -42,11 +45,34 @@ fun BookListScreen(
         viewModel.load(userId)
     }
 
+    val isSyncing by viewModel.isSyncing.collectAsState()
+    val deleteDialogState by viewModel.deleteDialogState.collectAsState()
+
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(text = stringResource(R.string.my_books))
-            })
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.my_books))
+                },
+                actions = {
+                    androidx.compose.material3.IconButton(
+                        onClick = { viewModel.syncWithFirebase(userId) },
+                        enabled = !isSyncing
+                    ) {
+                        if (isSyncing) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.padding(12.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            androidx.compose.material3.Icon(
+                                imageVector = androidx.compose.material.icons.Icons.Default.Sync,
+                                contentDescription = "Sync with Firebase"
+                            )
+                        }
+                    }
+                }
+            )
         },
     ) { paddingValues ->
         Column(
@@ -71,14 +97,17 @@ fun BookListScreen(
                     val books = state.books
                     BookListContent(
                         books = books,
+                        downloadingBooks = downloadingBooks,
                         rootPaddingValues = rootPaddingValues,
                         onBookClick = {
 
                         },
-                        onDownloadClick = {
-
+                        onDownloadClick = { book ->
+                            viewModel.downloadBook(book.id)
                         },
-                        onDeleteClick = { viewModel.deleteBook(it.id) }
+                        onDeleteClick = { book ->
+                            viewModel.showDeleteDialog(book.id, book.title)
+                        }
                     )
                 }
 
@@ -93,12 +122,27 @@ fun BookListScreen(
         }
     }
 
-
+    // Диалог удаления
+    deleteDialogState?.let { dialogState ->
+        DeleteConfirmDialog(
+            bookTitle = dialogState.bookTitle,
+            onDismiss = { viewModel.dismissDeleteDialog() },
+            onDeleteLocal = {
+                viewModel.deleteBookLocally(dialogState.bookId)
+                viewModel.dismissDeleteDialog()
+            },
+            onDeleteLocalAndServer = {
+                viewModel.deleteBookEverywhere(dialogState.bookId)
+                viewModel.dismissDeleteDialog()
+            }
+        )
+    }
 }
 
 @Composable
 private fun BookListContent(
     books: List<Book>,
+    downloadingBooks: Set<String>,
     rootPaddingValues: PaddingValues,
     onBookClick: (Book) -> Unit,
     onDownloadClick: (Book) -> Unit,
@@ -117,6 +161,7 @@ private fun BookListContent(
         items(items = books, key = { it.id }) {
             BookListItem(
                 book = it,
+                isDownloading = downloadingBooks.contains(it.id),
                 onDeleteClick = { onDeleteClick(it) },
                 onDownloadClick = { onDownloadClick(it) },
                 onBookClick = { onBookClick(it) }

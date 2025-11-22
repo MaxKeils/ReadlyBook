@@ -6,7 +6,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import max.keils.data.source.local.BookCacheManager
-import max.keils.domain.repository.BookRepository
 import max.keils.domain.usecase.UploadBookUseCase
 
 class UploadBookWorker(
@@ -22,6 +21,7 @@ class UploadBookWorker(
             val filePath = inputData.getString("filePath") ?: return Result.failure()
             val title = inputData.getString("title") ?: return Result.failure()
             val author = inputData.getString("author") ?: return Result.failure()
+            val coverUrl = inputData.getString("coverUrl")
 
             val file = java.io.File(filePath)
             if (!file.exists()) {
@@ -40,6 +40,7 @@ class UploadBookWorker(
                 userId = inputData.getString("userId") ?: "",
                 fileName = fileName,
                 localPath = null,
+                coverUrl = coverUrl,
                 uploadedAt = System.currentTimeMillis()
             )
 
@@ -56,7 +57,7 @@ class UploadBookWorker(
             try {
                 file.delete()
             } catch (e: Exception) {
-                Log.w("ReadlyApp", "Failed to delete temporary file", e)
+                Log.w(TAG, "Failed to delete temporary file", e)
             }
 
             Result.success()

@@ -19,4 +19,13 @@
     <string name="try_again">Try again</string>
     <string name="my_books">My books</string>
     <string name="search_books">Search books...</string>
+    <string name="cover_url_optional">Cover URL (optional)</string>
+    <string name="delete_book">Delete book</string>
+    <string name="delete">Delete a \"%1$s\"?</string>
+    <string name="select_an_action">Select an action:</string>
+    <string name="everywhere">Everywhere</string>
+    <string name="only_locally">Only locally</string>
+    <string name="cancel">Cancel</string>
+    <string name="book_cover_placeholder">Book cover placeholder</string>
+    <string name="download">Download</string>
 </resources>

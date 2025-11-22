@@ -133,20 +133,6 @@ class BookCacheManager @Inject constructor(
             }
         }
 
-    suspend fun clearTempUploadCache(): Boolean = withContext(Dispatchers.IO) {
-        try {
-            val deleted = tempUploadDir.deleteRecursively()
-            if (deleted) {
-                tempUploadDir.mkdirs()
-                Log.d(TAG, "Temp upload cache cleared")
-            }
-            deleted
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to clear temp upload cache", e)
-            false
-        }
-    }
-
     companion object {
         private const val TAG = "BookCacheManager"
     }
