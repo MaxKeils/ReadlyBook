@@ -28,7 +28,11 @@ import max.keils.readlybook.ui.components.ReadlySearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookListScreen(userId: String, viewModel: BookListViewModel = viewModel()) {
+fun BookListScreen(
+    userId: String,
+    rootPaddingValues: PaddingValues,
+    viewModel: BookListViewModel = viewModel()
+) {
     val state by viewModel.state.collectAsState()
 
     val searchBarState = rememberSearchBarState()
@@ -43,9 +47,13 @@ fun BookListScreen(userId: String, viewModel: BookListViewModel = viewModel()) {
             TopAppBar(title = {
                 Text(text = stringResource(R.string.my_books))
             })
-        }
+        },
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             ReadlySearchBar(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 searchBarState = searchBarState,
@@ -62,16 +70,15 @@ fun BookListScreen(userId: String, viewModel: BookListViewModel = viewModel()) {
                 is BookListState.Success -> {
                     val books = state.books
                     BookListContent(
-                        books,
+                        books = books,
+                        rootPaddingValues = rootPaddingValues,
                         onBookClick = {
 
                         },
                         onDownloadClick = {
 
                         },
-                        onDeleteClick = {
-
-                        }
+                        onDeleteClick = { viewModel.deleteBook(it.id) }
                     )
                 }
 
@@ -92,6 +99,7 @@ fun BookListScreen(userId: String, viewModel: BookListViewModel = viewModel()) {
 @Composable
 private fun BookListContent(
     books: List<Book>,
+    rootPaddingValues: PaddingValues,
     onBookClick: (Book) -> Unit,
     onDownloadClick: (Book) -> Unit,
     onDeleteClick: (Book) -> Unit
@@ -99,8 +107,12 @@ private fun BookListContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(PaddingValues(8.dp)),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = 8.dp),
+        contentPadding = PaddingValues(
+            bottom = rootPaddingValues.calculateBottomPadding(),
+            top = 8.dp,
+        ),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(items = books, key = { it.id }) {
             BookListItem(

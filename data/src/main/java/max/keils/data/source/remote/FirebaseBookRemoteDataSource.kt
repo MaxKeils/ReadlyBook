@@ -52,7 +52,7 @@ class FirebaseBookRemoteDataSource @Inject constructor(
         return docRef.id
     }
 
-        fun getUserBooks(userId: String): Flow<List<Book>> = callbackFlow {
+    fun getUserBooks(userId: String): Flow<List<Book>> = callbackFlow {
         val listener = firestore.collection("books")
             .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, error ->
@@ -74,7 +74,13 @@ class FirebaseBookRemoteDataSource @Inject constructor(
         awaitClose { listener.remove() }
     }
 
-    companion object {
-        private const val TAG = "FirebaseBookRemoteDataSource"
+    suspend fun deleteBook(bookId: String): Boolean {
+        return try {
+            val docRef = firestore.collection("books").document(bookId)
+            docRef.delete().await()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }

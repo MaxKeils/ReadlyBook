@@ -36,4 +36,8 @@ object UseCaseModule {
     fun provideGetUserBooksUseCase(repository: BookRepository) =
         GetUserBooksUseCase(repository)
 
+    @Provides
+    fun provideDeleteBookUseCase(repository: BookRepository) =
+        max.keils.domain.usecase.DeleteBookUseCase(repository)
+
 }

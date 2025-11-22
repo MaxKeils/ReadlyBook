@@ -62,12 +62,8 @@ class BookCacheManager @Inject constructor(
         try {
             val bookDir = File(persistentDir, bookId)
             val deleted = bookDir.deleteRecursively()
-            if (deleted) {
-                Log.d(TAG, "Book removed from cache: $bookId")
-            }
             deleted
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to remove book from cache", e)
             false
         }
     }

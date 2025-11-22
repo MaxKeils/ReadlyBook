@@ -32,12 +32,12 @@ fun MainScreen(viewModelFactory: ViewModelFactory, userId: String?) {
                 navigationState = navigationState
             )
         }
-    ) { _ ->
+    ) { paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
             bookListScreen = {
                 userId?.let { userId ->
-                    BookListScreen(userId, viewModel(factory = viewModelFactory))
+                    BookListScreen(userId, viewModel = viewModel(factory = viewModelFactory), rootPaddingValues = paddingValues)
                 }
             },
             uploadBookScreen = { UploadBookScreen(viewModel = viewModel(factory = viewModelFactory)) },

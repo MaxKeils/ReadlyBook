@@ -42,7 +42,8 @@ class BookRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteBook(bookId: String): Boolean {
-        TODO()
+        val removedFromCache = cacheManager.removeBookFromCache(bookId)
+        val removedFromFirestore = remoteDataSource.deleteBook(bookId)
+        return removedFromCache || removedFromFirestore
     }
-
 }
