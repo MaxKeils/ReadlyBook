@@ -4,6 +4,9 @@ import kotlinx.serialization.Serializable
 
 internal sealed class Screen {
 
+    val route: String
+        get() = this::class.qualifiedName ?: error("Unknown route")
+
     @Serializable
     object Auth : Screen()
 

@@ -3,10 +3,12 @@ package max.keils.readlybook.di
 import dagger.Module
 import dagger.Provides
 import max.keils.domain.repository.AuthRepository
+import max.keils.domain.repository.BookRepository
 import max.keils.domain.usecase.GetCurrentUserIdUseCase
 import max.keils.domain.usecase.SignInUseCase
 import max.keils.domain.usecase.SignOutUseCase
 import max.keils.domain.usecase.SignUpUseCase
+import max.keils.domain.usecase.UploadBookUseCase
 
 @Module
 object UseCaseModule {
@@ -24,5 +26,9 @@ object UseCaseModule {
     @Provides
     fun provideGetCurrentUserUseCase(repository: AuthRepository) =
         GetCurrentUserIdUseCase(repository)
+
+    @Provides
+    fun provideUploadBookUseCase(repository: BookRepository) =
+        UploadBookUseCase(repository)
 
 }
