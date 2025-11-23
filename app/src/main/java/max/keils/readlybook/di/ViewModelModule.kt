@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import max.keils.readlybook.ui.screen.auth.AuthViewModel
 import max.keils.readlybook.ui.screen.list.BookListViewModel
+import max.keils.readlybook.ui.screen.profile.ProfileViewModel
 import max.keils.readlybook.ui.screen.reader.ReaderViewModel
 import max.keils.readlybook.ui.screen.upload.UploadBookViewModel
 
@@ -31,5 +32,10 @@ interface ViewModelModule {
     @ViewModelKey(ReaderViewModel::class)
     @IntoMap
     fun bindReaderViewModel(viewModel: ReaderViewModel): ViewModel
+
+    @Binds
+    @ViewModelKey(ProfileViewModel::class)
+    @IntoMap
+    fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
 }

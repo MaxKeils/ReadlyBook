@@ -21,8 +21,20 @@ object UseCaseModule {
     fun provideSignUpUseCase(repository: AuthRepository): SignUpUseCase = SignUpUseCase(repository)
 
     @Provides
-    fun provideGetCurrentUserUseCase(repository: AuthRepository) =
+    fun provideGetCurrentUserIdUseCase(repository: AuthRepository) =
         GetCurrentUserIdUseCase(repository)
+
+    @Provides
+    fun provideGetCurrentUserUseCase(repository: AuthRepository) =
+        GetCurrentUserUseCase(repository)
+
+    @Provides
+    fun provideUpdateUserProfileUseCase(repository: AuthRepository) =
+        UpdateUserProfileUseCase(repository)
+
+    @Provides
+    fun provideUploadUserPhotoUseCase(repository: AuthRepository) =
+        UploadUserPhotoUseCase(repository)
 
     @Provides
     fun provideUploadBookUseCase(repository: BookRepository) =
@@ -42,19 +54,19 @@ object UseCaseModule {
 
     @Provides
     fun provideGetUserBooksFromCacheUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.GetUserBooksFromCacheUseCase(repository)
+        GetUserBooksFromCacheUseCase(repository)
 
     @Provides
     fun provideSyncUserBooksWithFirebaseUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.SyncUserBooksWithFirebaseUseCase(repository)
+        SyncUserBooksWithFirebaseUseCase(repository)
 
     @Provides
     fun provideDeleteBookLocallyUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.DeleteBookLocallyUseCase(repository)
+        DeleteBookLocallyUseCase(repository)
 
     @Provides
     fun provideDeleteBookEverywhereUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.DeleteBookEverywhereUseCase(repository)
+        DeleteBookEverywhereUseCase(repository)
 
     @Provides
     fun provideLoadBookContentUseCase(repository: ReaderRepository) =

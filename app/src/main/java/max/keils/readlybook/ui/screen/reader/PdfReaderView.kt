@@ -1,6 +1,5 @@
 package max.keils.readlybook.ui.screen.reader
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -10,14 +9,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.rajat.pdfviewer.PdfRendererView
 import com.rajat.pdfviewer.compose.PdfRendererViewCompose
+import com.rajat.pdfviewer.util.PdfSource
 import java.io.File
 
 @Composable
 internal fun PdfReaderView(
     filePath: String,
+    modifier: Modifier = Modifier,
     initialPage: Int = 0,
-    onPageChanged: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    onPageChanged: (Int) -> Unit
 ) {
     val file = File(filePath)
 
@@ -37,7 +37,7 @@ internal fun PdfReaderView(
 
     Box(modifier = modifier.fillMaxSize()) {
         PdfRendererViewCompose(
-            url = Uri.fromFile(file).toString(),
+            source = PdfSource.LocalFile(file),
             lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current,
             statusCallBack = object : PdfRendererView.StatusCallBack {
                 override fun onPageChanged(currentPage: Int, totalPage: Int) {
