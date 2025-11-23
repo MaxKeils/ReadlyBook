@@ -110,6 +110,13 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
                             .fillMaxWidth(0.7f)
                             .height(8.dp)
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = {
+                        viewModel.cancelUpload()
+                    }) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
                 }
 
                 UploadBookState.Success -> {
@@ -241,7 +248,7 @@ private fun InputMetadataBottomSheet(
             ReadlyTextField(
                 value = title,
                 onValueChange = { onTitleChange(it) },
-                label = stringResource(R.string.author),
+                label = stringResource(R.string.book_name),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -249,7 +256,7 @@ private fun InputMetadataBottomSheet(
             ReadlyTextField(
                 value = author,
                 onValueChange = { onAuthorChange(it) },
-                label = stringResource(R.string.book_name),
+                label = stringResource(R.string.author),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
