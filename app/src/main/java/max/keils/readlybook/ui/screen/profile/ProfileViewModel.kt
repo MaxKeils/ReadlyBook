@@ -1,6 +1,5 @@
 package max.keils.readlybook.ui.screen.profile
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +36,8 @@ class ProfileViewModel @Inject constructor(
                     }
                 },
                 onFailure = { error ->
-                    _state.value = ProfileState.Error("Profile upload error: ${error.localizedMessage}")
+                    _state.value =
+                        ProfileState.Error("Profile upload error: ${error.localizedMessage}")
                 }
             )
         }
@@ -89,7 +89,8 @@ class ProfileViewModel @Inject constructor(
                 },
                 onFailure = { error ->
                     _state.value = currentState.copy(isUploading = false)
-                    _state.value = ProfileState.Error("Profile update error: ${error.localizedMessage}")
+                    _state.value =
+                        ProfileState.Error("Profile update error: ${error.localizedMessage}")
                 }
             )
         }
@@ -123,13 +124,15 @@ class ProfileViewModel @Inject constructor(
                         },
                         onFailure = { error ->
                             _state.value = currentState.copy(isUploading = false)
-                            _state.value = ProfileState.Error("Photo update error: ${error.localizedMessage}")
+                            _state.value =
+                                ProfileState.Error("Photo update error: ${error.localizedMessage}")
                         }
                     )
                 },
                 onFailure = { error ->
                     _state.value = currentState.copy(isUploading = false)
-                    _state.value = ProfileState.Error("Error uploading photo: ${error.localizedMessage}")
+                    _state.value =
+                        ProfileState.Error("Error uploading photo: ${error.localizedMessage}")
                 }
             )
         }

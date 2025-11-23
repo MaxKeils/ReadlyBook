@@ -10,15 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -37,11 +31,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import max.keils.readlybook.R
+import max.keils.readlybook.ui.components.ReadlyTextField
 import max.keils.readlybook.ui.theme.ReadlyBookTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -192,15 +185,12 @@ private fun LoginForm(
     onSubmit: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
-    var passwordVisible by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        OutlinedTextField(
+        ReadlyTextField(
             value = email,
             onValueChange = onEmailChange,
-            label = { Text(text = stringResource(R.string.email)) },
-            placeholder = { Text(text = stringResource(R.string.email)) },
-            singleLine = true,
+            label = stringResource(R.string.email),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -213,13 +203,11 @@ private fun LoginForm(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        OutlinedTextField(
+        ReadlyTextField(
             value = password,
             onValueChange = onPasswordChange,
-            label = { Text(text = stringResource(R.string.password)) },
-            placeholder = { Text(text = stringResource(R.string.password)) },
-            singleLine = true,
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            label = stringResource(R.string.password),
+            isPassword = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -230,16 +218,9 @@ private fun LoginForm(
                     onSubmit()
                 }
             ),
-            trailingIcon = {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(
-                        imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = if (passwordVisible) "Hide password" else "Show password"
-                    )
-                }
-            },
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -250,17 +231,14 @@ fun RegisterForm(
     onSubmit: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
-    var passwordVisible by remember { mutableStateOf(false) }
 
     Spacer(Modifier.height(12.dp))
 
-    OutlinedTextField(
+    ReadlyTextField(
         value = repeatPassword,
         onValueChange = onRepeatPasswordChange,
-        label = { Text(stringResource(R.string.repeat_password)) },
-        placeholder = { Text(stringResource(R.string.repeat_password)) },
-        singleLine = true,
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        label = stringResource(R.string.repeat_password),
+        isPassword = true,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
@@ -271,14 +249,6 @@ fun RegisterForm(
                 onSubmit()
             }
         ),
-        trailingIcon = {
-            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Icon(
-                    imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                    contentDescription = if (passwordVisible) "Hide password" else "Show password"
-                )
-            }
-        },
         modifier = Modifier.fillMaxWidth()
     )
 }

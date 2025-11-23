@@ -1,6 +1,5 @@
 package max.keils.data.repository
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.StateFlow
 import max.keils.data.mapper.UserMapper
@@ -42,18 +41,22 @@ class AuthRepositoryImpl @Inject constructor(
         }
     )
 
-    override suspend fun updateUserProfile(displayName: String?, photoUrl: String?): Result<UserData> = performAuth {
+    override suspend fun updateUserProfile(
+        displayName: String?,
+        photoUrl: String?
+    ): Result<UserData> = performAuth {
         firebaseAuthRemoteDataSource.updateUserProfile(displayName, photoUrl)
     }
 
-    override suspend fun uploadUserPhoto(photoBytes: ByteArray, userId: String): Result<String> = runCatching {
-        firebaseAuthRemoteDataSource.uploadUserPhoto(photoBytes, userId)
-    }.fold(
-        onSuccess = { Result.success(it) },
-        onFailure = {
-            Result.failure(it)
-        }
-    )
+    override suspend fun uploadUserPhoto(photoBytes: ByteArray, userId: String): Result<String> =
+        runCatching {
+            firebaseAuthRemoteDataSource.uploadUserPhoto(photoBytes, userId)
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = {
+                Result.failure(it)
+            }
+        )
 
 
     private suspend fun performAuth(

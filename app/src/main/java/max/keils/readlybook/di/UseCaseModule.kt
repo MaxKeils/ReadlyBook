@@ -54,19 +54,19 @@ object UseCaseModule {
 
     @Provides
     fun provideGetUserBooksFromCacheUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.GetUserBooksFromCacheUseCase(repository)
+        GetUserBooksFromCacheUseCase(repository)
 
     @Provides
     fun provideSyncUserBooksWithFirebaseUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.SyncUserBooksWithFirebaseUseCase(repository)
+        SyncUserBooksWithFirebaseUseCase(repository)
 
     @Provides
     fun provideDeleteBookLocallyUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.DeleteBookLocallyUseCase(repository)
+        DeleteBookLocallyUseCase(repository)
 
     @Provides
     fun provideDeleteBookEverywhereUseCase(repository: BookRepository) =
-        max.keils.domain.usecase.DeleteBookEverywhereUseCase(repository)
+        DeleteBookEverywhereUseCase(repository)
 
     @Provides
     fun provideLoadBookContentUseCase(repository: ReaderRepository) =
