@@ -37,7 +37,8 @@ import max.keils.readlybook.ui.components.ReadlySearchBar
 fun BookListScreen(
     userId: String,
     rootPaddingValues: PaddingValues,
-    viewModel: BookListViewModel = viewModel()
+    viewModel: BookListViewModel = viewModel(),
+    onBookClick: (Book) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
     val downloadingBooks by viewModel.downloadingBooks.collectAsState()
@@ -104,9 +105,7 @@ fun BookListScreen(
                         books = books,
                         downloadingBooks = downloadingBooks,
                         rootPaddingValues = rootPaddingValues,
-                        onBookClick = {
-
-                        },
+                        onBookClick = onBookClick,
                         onDownloadClick = { book ->
                             viewModel.downloadBook(book.id)
                         },

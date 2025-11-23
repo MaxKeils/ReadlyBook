@@ -4,14 +4,8 @@ import dagger.Module
 import dagger.Provides
 import max.keils.domain.repository.AuthRepository
 import max.keils.domain.repository.BookRepository
-import max.keils.domain.usecase.DeleteBookUseCase
-import max.keils.domain.usecase.DownloadBookUseCase
-import max.keils.domain.usecase.GetCurrentUserIdUseCase
-import max.keils.domain.usecase.GetUserBooksUseCase
-import max.keils.domain.usecase.SignInUseCase
-import max.keils.domain.usecase.SignOutUseCase
-import max.keils.domain.usecase.SignUpUseCase
-import max.keils.domain.usecase.UploadBookUseCase
+import max.keils.domain.repository.ReaderRepository
+import max.keils.domain.usecase.*
 
 @Module
 object UseCaseModule {
@@ -61,4 +55,24 @@ object UseCaseModule {
     @Provides
     fun provideDeleteBookEverywhereUseCase(repository: BookRepository) =
         max.keils.domain.usecase.DeleteBookEverywhereUseCase(repository)
+
+    @Provides
+    fun provideLoadBookContentUseCase(repository: ReaderRepository) =
+        LoadBookContentUseCase(repository)
+
+    @Provides
+    fun provideGetReadingProgressUseCase(repository: ReaderRepository) =
+        GetReadingProgressUseCase(repository)
+
+    @Provides
+    fun provideSaveReadingProgressUseCase(repository: ReaderRepository) =
+        SaveReadingProgressUseCase(repository)
+
+    @Provides
+    fun provideGetReaderSettingsUseCase(repository: ReaderRepository) =
+        GetReaderSettingsUseCase(repository)
+
+    @Provides
+    fun provideSaveReaderSettingsUseCase(repository: ReaderRepository) =
+        SaveReaderSettingsUseCase(repository)
 }
