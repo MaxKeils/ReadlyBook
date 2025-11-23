@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "ReadlyBook"
 include(":app")
- 
+include(":domain")
+include(":data")
