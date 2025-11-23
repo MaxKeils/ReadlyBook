@@ -3,7 +3,9 @@ package max.keils.readlybook.ui.screen.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,18 +16,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberSearchBarState
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import max.keils.domain.entity.Book
 import max.keils.readlybook.R
 import max.keils.readlybook.ui.components.BookListItem
 import max.keils.readlybook.ui.components.DeleteConfirmDialog
+import max.keils.readlybook.ui.components.LottieAnimation
 import max.keils.readlybook.ui.components.ReadlySearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +82,8 @@ fun BookListScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ReadlySearchBar(
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -112,17 +117,20 @@ fun BookListScreen(
                 }
 
                 is BookListState.Empty -> {
-
+                    LottieAnimation(rawRes = R.raw.empty_book_list)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = stringResource(R.string.oops_error, state.message))
                 }
 
                 is BookListState.Error -> {
-
+                    LottieAnimation(rawRes = R.raw.failed_upload)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = stringResource(R.string.oops_error, state.error))
                 }
             }
         }
     }
 
-    // Диалог удаления
     deleteDialogState?.let { dialogState ->
         DeleteConfirmDialog(
             bookTitle = dialogState.bookTitle,
