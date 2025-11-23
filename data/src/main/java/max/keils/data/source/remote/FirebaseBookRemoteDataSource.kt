@@ -4,6 +4,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import max.keils.data.mapper.BookMapper
@@ -43,13 +46,61 @@ class FirebaseBookRemoteDataSource @Inject constructor(
 
         val bookWithUrl = book.copy(fileUrl = downloadUri.toString())
 
-        val bookMap = bookMapper.mapEntityToFirestoreMap(bookWithUrl)
+        val bookMap = bookMapper.mapDomainToFirestoreMap(bookWithUrl)
         val docRef = firestore.collection("books").add(bookMap).await()
 
         return docRef.id
     }
 
-    companion object {
-        private const val TAG = "FirebaseBookRemoteDataSource"
+    fun getUserBooks(userId: String): Flow<List<Book>> = callbackFlow {
+        val listener = firestore.collection("books")
+            .whereEqualTo("userId", userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                if (snapshot == null) {
+                    trySend(emptyList())
+                    return@addSnapshotListener
+                }
+                val books = snapshot.documents.mapNotNull { document ->
+                    val map = document.data ?: return@mapNotNull null
+                    val book = bookMapper.mapFirestoreMapToDomain(document.id, map)
+                    book
+                }
+                trySend(books)
+            }
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun deleteBook(bookId: String): Boolean {
+        return try {
+            val docRef = firestore.collection("books").document(bookId)
+            docRef.delete().await()
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    suspend fun downloadBookFromStorage(fileUrl: String): ByteArray {
+        val storageRef = storage.getReferenceFromUrl(fileUrl)
+
+        val metadata = storageRef.metadata.await()
+        val fileSize = metadata.sizeBytes
+
+        val bytes = storageRef.getBytes(fileSize).await()
+        return bytes
+    }
+
+    suspend fun getBookById(bookId: String): Book? {
+        return try {
+            val document = firestore.collection("books").document(bookId).get().await()
+            val map = document.data ?: return null
+            bookMapper.mapFirestoreMapToDomain(document.id, map)
+        } catch (_: Exception) {
+            null
+        }
     }
 }

@@ -11,10 +11,11 @@ import max.keils.readlybook.ui.components.NavigationBar
 import max.keils.readlybook.ui.navigation.AppNavGraph
 import max.keils.readlybook.ui.navigation.NavigationItem
 import max.keils.readlybook.ui.navigation.rememberNavigationState
+import max.keils.readlybook.ui.screen.list.BookListScreen
 import max.keils.readlybook.ui.screen.upload.UploadBookScreen
 
 @Composable
-fun MainScreen(viewModelFactory: ViewModelFactory) {
+fun MainScreen(viewModelFactory: ViewModelFactory, userId: String?) {
     val navigationState = rememberNavigationState()
 
     val navigationItems = listOf(
@@ -31,10 +32,14 @@ fun MainScreen(viewModelFactory: ViewModelFactory) {
                 navigationState = navigationState
             )
         }
-    ) { _ ->
+    ) { paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            bookListScreen = { Text("book list") },
+            bookListScreen = {
+                userId?.let { userId ->
+                    BookListScreen(userId, viewModel = viewModel(factory = viewModelFactory), rootPaddingValues = paddingValues)
+                }
+            },
             uploadBookScreen = { UploadBookScreen(viewModel = viewModel(factory = viewModelFactory)) },
             profileScreen = { Text("Profile screen") },
             startDestination = NavigationItem.BookList.screen,

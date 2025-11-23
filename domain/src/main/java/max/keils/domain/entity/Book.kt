@@ -8,6 +8,7 @@ data class Book(
     val userId: String,
     val fileName: String = "",
     val localPath: String? = null,
+    val coverUrl: String? = null,
     val uploadedAt: Long = System.currentTimeMillis()
 ) {
     val isAvailableOffline: Boolean = !localPath.isNullOrEmpty()

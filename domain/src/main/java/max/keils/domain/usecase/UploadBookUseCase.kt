@@ -8,7 +8,7 @@ class UploadBookUseCase(private val repository: BookRepository) {
     suspend operator fun invoke(
         book: Book,
         fileBytes: ByteArray,
-        onProgress: (Float) -> Unit
+        onProgress: suspend (Float) -> Unit
     ): String {
         return repository.uploadBook(book, fileBytes, onProgress)
     }

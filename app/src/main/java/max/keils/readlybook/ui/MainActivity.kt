@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 AuthScreenRoute(viewModel)
             },
             mainScreen = {
-                MainScreen(viewModelFactory)
+                MainScreen(viewModelFactory = viewModelFactory, userId = currentUserId)
             }
         )
 

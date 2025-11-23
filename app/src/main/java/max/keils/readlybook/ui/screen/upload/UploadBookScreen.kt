@@ -50,6 +50,7 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
     var fileName by remember { mutableStateOf("") }
     val (title, setTitle) = remember { mutableStateOf("") }
     val (author, setAuthor) = remember { mutableStateOf("") }
+    val (coverUrl, setCoverUrl) = remember { mutableStateOf("") }
 
     val state by viewModel.state.collectAsState()
     var isInputMetadataBottomSheetExpanded by remember { mutableStateOf(false) }
@@ -109,6 +110,13 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
                             .fillMaxWidth(0.7f)
                             .height(8.dp)
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = {
+                        viewModel.cancelUpload()
+                    }) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
                 }
 
                 UploadBookState.Success -> {
@@ -129,6 +137,7 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
                             viewModel.resetState()
                             setTitle("")
                             setAuthor("")
+                            setCoverUrl("")
                             isInputMetadataBottomSheetExpanded = false
                         }
                     ) {
@@ -161,6 +170,7 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
                         viewModel.resetState()
                         setTitle("")
                         setAuthor("")
+                        setCoverUrl("")
                         isInputMetadataBottomSheetExpanded = false
                     }) {
                         Text(text = stringResource(R.string.try_again))
@@ -189,7 +199,8 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
                         context,
                         fileUri,
                         title,
-                        author
+                        author,
+                        coverUrl.takeIf { it.isNotBlank() }
                     )
                     isInputMetadataBottomSheetExpanded = false
                 }
@@ -201,6 +212,8 @@ fun UploadBookScreen(viewModel: UploadBookViewModel = viewModel()) {
             onTitleChange = setTitle,
             author = author,
             onAuthorChange = setAuthor,
+            coverUrl = coverUrl,
+            onCoverUrlChange = setCoverUrl,
         )
     }
 }
@@ -213,6 +226,8 @@ private fun InputMetadataBottomSheet(
     onTitleChange: (String) -> Unit,
     author: String,
     onAuthorChange: (String) -> Unit,
+    coverUrl: String,
+    onCoverUrlChange: (String) -> Unit,
     selectedFileName: String,
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismissRequest: () -> Unit,
@@ -233,7 +248,7 @@ private fun InputMetadataBottomSheet(
             ReadlyTextField(
                 value = title,
                 onValueChange = { onTitleChange(it) },
-                label = stringResource(R.string.author),
+                label = stringResource(R.string.book_name),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -241,7 +256,15 @@ private fun InputMetadataBottomSheet(
             ReadlyTextField(
                 value = author,
                 onValueChange = { onAuthorChange(it) },
-                label = stringResource(R.string.book_name),
+                label = stringResource(R.string.author),
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            ReadlyTextField(
+                value = coverUrl,
+                onValueChange = { onCoverUrlChange(it) },
+                label = stringResource(R.string.cover_url_optional),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -262,13 +285,15 @@ private fun InputMetadataBottomSheet(
 private fun InputMetadataBottomSheetPreview() {
     ReadlyBookTheme {
         InputMetadataBottomSheet(
-            selectedFileName = "example_book.pdf",
-            onUploadClick = { },
-            onDismissRequest = { },
             title = "",
             onTitleChange = { },
             author = "",
             onAuthorChange = { },
+            coverUrl = "",
+            onCoverUrlChange = { },
+            selectedFileName = "example_book.pdf",
+            onDismissRequest = { },
+            onUploadClick = { },
         )
     }
 }

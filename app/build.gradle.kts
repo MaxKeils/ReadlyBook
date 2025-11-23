@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
 
     implementation(libs.lottie.compose)
+    implementation(libs.coil.compose)
+
+    implementation("androidx.work:work-runtime-ktx:2.11.0")
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
