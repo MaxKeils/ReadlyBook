@@ -4,7 +4,8 @@ ReadlyBook — это современное Android-приложение для
 
 ## 📹 Демонстрация работы
 
-https://github.com/user-attachments/assets/fd87e9f7-1a54-459b-9868-a6e68152d78a
+https://github.com/user-attachments/assets/43e6629b-ad70-4ef8-b0d2-809b6d8cf353
+
 
 ## ✨ Основные возможности
 
