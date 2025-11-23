@@ -12,4 +12,10 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String): Result<UserData>
 
     fun signOut(): Result<Unit>
+
+    suspend fun getCurrentUser(): Result<UserData?>
+
+    suspend fun updateUserProfile(displayName: String?, photoUrl: String?): Result<UserData>
+
+    suspend fun uploadUserPhoto(photoBytes: ByteArray, userId: String): Result<String>
 }

@@ -3,7 +3,6 @@ package max.keils.readlybook.ui.screen.main
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,6 +14,7 @@ import max.keils.readlybook.ui.navigation.AppNavGraph
 import max.keils.readlybook.ui.navigation.NavigationItem
 import max.keils.readlybook.ui.navigation.rememberNavigationState
 import max.keils.readlybook.ui.screen.list.BookListScreen
+import max.keils.readlybook.ui.screen.profile.ProfileScreen
 import max.keils.readlybook.ui.screen.reader.ReaderScreen
 import max.keils.readlybook.ui.screen.upload.UploadBookScreen
 
@@ -66,7 +66,11 @@ fun MainScreen(viewModelFactory: ViewModelFactory, userId: String?) {
                 }
             },
             uploadBookScreen = { UploadBookScreen(viewModel = viewModel(factory = viewModelFactory)) },
-            profileScreen = { Text("Profile screen") },
+            profileScreen = {
+                ProfileScreen(
+                    viewModel = viewModel(factory = viewModelFactory)
+                )
+            },
             readerScreen = { bookId, bookTitle, readerUserId ->
                 ReaderScreen(
                     bookId = bookId,

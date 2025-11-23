@@ -21,8 +21,20 @@ object UseCaseModule {
     fun provideSignUpUseCase(repository: AuthRepository): SignUpUseCase = SignUpUseCase(repository)
 
     @Provides
-    fun provideGetCurrentUserUseCase(repository: AuthRepository) =
+    fun provideGetCurrentUserIdUseCase(repository: AuthRepository) =
         GetCurrentUserIdUseCase(repository)
+
+    @Provides
+    fun provideGetCurrentUserUseCase(repository: AuthRepository) =
+        GetCurrentUserUseCase(repository)
+
+    @Provides
+    fun provideUpdateUserProfileUseCase(repository: AuthRepository) =
+        UpdateUserProfileUseCase(repository)
+
+    @Provides
+    fun provideUploadUserPhotoUseCase(repository: AuthRepository) =
+        UploadUserPhotoUseCase(repository)
 
     @Provides
     fun provideUploadBookUseCase(repository: BookRepository) =

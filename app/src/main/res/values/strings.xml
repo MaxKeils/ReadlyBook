@@ -14,11 +14,11 @@
     <string name="book_name">Book name</string>
     <string name="upload_successful">Upload successful</string>
     <string name="upload_another_book">Upload another book</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="loading_error">Loading error</string>
     <string name="try_again">Try again</string>
     <string name="my_books">My books</string>
-    <string name="search_books">Search books...</string>
+    <string name="search_books">Search books…</string>
     <string name="cover_url_optional">Cover URL (optional)</string>
     <string name="delete_book">Delete book</string>
     <string name="delete">Delete a \"%1$s\"?</string>
@@ -28,10 +28,10 @@
     <string name="cancel">Cancel</string>
     <string name="book_cover_placeholder">Book cover placeholder</string>
     <string name="download">Download</string>
-    <string name="oops_error">Упс... %1$s</string>
+    <string name="oops_error">Упс… %1$s</string>
     <string name="compact">Compact</string>
-    <string name="normal">Средний</string>
-    <string name="relaxed">Широкий</string>
+    <string name="normal">Normal</string>
+    <string name="relaxed">Relaxed</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="sepia">Sepia</string>
@@ -50,4 +50,13 @@
     <string name="error_loading_book">Book loading error</string>
     <string name="delete_locally">Delete locally</string>
     <string name="delete_everywhere">Delete everywhere</string>
+    <string name="repeat">Repeat\n</string>
+    <string name="profile_photo">Profile photo</string>
+    <string name="photo_stub">Photo stub</string>
+    <string name="change_photo">Change photo</string>
+    <string name="first_name">First name</string>
+    <string name="edit">Edit</string>
+    <string name="unknown">Unknown</string>
+    <string name="save">Save</string>
+    <string name="sign_out">Sign out</string>
 </resources>
