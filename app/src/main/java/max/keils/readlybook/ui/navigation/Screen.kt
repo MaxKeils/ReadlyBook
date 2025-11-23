@@ -23,6 +23,10 @@ internal sealed class Screen {
     object Profile : Screen()
 
     @Serializable
-    object ReaderScreen : Screen()
+    data class ReaderScreen(
+        val bookId: String,
+        val bookTitle: String,
+        val userId: String
+    ) : Screen()
 
 }

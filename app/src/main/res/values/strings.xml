@@ -29,4 +29,25 @@
     <string name="book_cover_placeholder">Book cover placeholder</string>
     <string name="download">Download</string>
     <string name="oops_error">Упс... %1$s</string>
+    <string name="compact">Compact</string>
+    <string name="normal">Средний</string>
+    <string name="relaxed">Широкий</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="sepia">Sepia</string>
+    <string name="system">System</string>
+    <string name="display_settings">Display Settings</string>
+    <string name="close">Close</string>
+    <string name="font_size">Font Size</string>
+    <string name="line_spacing">Line spacing</string>
+    <string name="color_theme">Color theme</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
+    <string name="extra_large">Extra large</string>
+    <string name="back">Back</string>
+    <string name="the_book_is_not_available_download_it">The book is not available, download it.</string>
+    <string name="error_loading_book">Book loading error</string>
+    <string name="delete_locally">Delete locally</string>
+    <string name="delete_everywhere">Delete everywhere</string>
 </resources>
